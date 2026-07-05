@@ -16,6 +16,7 @@ const Index = () => {
     messages,
     transcript,
     toggleListening,
+    stopSpeaking,
   } = useVoiceAssistant();
 
   // Category Selection Screen
@@ -164,6 +165,15 @@ const Index = () => {
               onClick={toggleListening}
               disabled={isProcessing || isSpeaking}
             />
+            {isSpeaking && (
+              <button
+                onClick={stopSpeaking}
+                className="w-14 h-14 rounded-full bg-destructive/20 hover:bg-destructive/40 text-destructive flex items-center justify-center transition-all duration-300 animate-in fade-in zoom-in ml-2 border border-destructive/30"
+                title="Interrupt / Stop AI"
+              >
+                <div className="w-5 h-5 bg-destructive rounded-sm" />
+              </button>
+            )}
           </div>
         </div>
       </div>

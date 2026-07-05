@@ -256,6 +256,15 @@ CRITICAL: Do NOT use any asterisks (*) for bolding, italics, or actions in your 
     speechSynthesis.speak(utterance);
   };
 
+  const stopSpeakingAction = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  }, []);
+
   const toggleListening = useCallback(() => {
     if (isListening) {
       stopListening();
@@ -272,5 +281,6 @@ CRITICAL: Do NOT use any asterisks (*) for bolding, italics, or actions in your 
     messages,
     transcript,
     toggleListening,
+    stopSpeaking: stopSpeakingAction,
   };
 };
