@@ -154,7 +154,8 @@ Guidelines:
 - For science topics, explain underlying principles
 - For history, provide context and key facts
 - Be conversational and engaging
-- Keep responses under 150 words unless the topic requires more detail`;
+- Keep responses under 150 words unless the topic requires more detail
+CRITICAL: Do NOT use any asterisks (*) for bolding, italics, or actions in your response. This text will be spoken out loud by a voice synthesizer, so format it as plain conversational text.`;
 
       let lastError = "";
 
@@ -185,7 +186,8 @@ Guidelines:
 
           const data = await response.json();
           if (data.choices && data.choices[0] && data.choices[0].message) {
-            return data.choices[0].message.content;
+            // Strip out asterisks as a fallback
+            return data.choices[0].message.content.replace(/\*/g, '');
           }
         } catch (err) {
           console.warn(`Error using model ${model}:`, err);
