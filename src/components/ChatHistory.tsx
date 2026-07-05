@@ -1,5 +1,5 @@
-import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 interface Message {
   role: "user" | "assistant";
@@ -8,48 +8,60 @@ interface Message {
 
 interface ChatHistoryProps {
   messages: Message[];
-  isOpen: boolean;
-  onClose: () => void;
 }
 
-const ChatHistory = ({ messages, isOpen, onClose }: ChatHistoryProps) => {
-  if (!isOpen) return null;
+const ChatHistory = ({ messages }: ChatHistoryProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-md h-full bg-card border-l border-border overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <h2 className="text-lg font-semibold text-foreground">Chat History</h2>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-secondary transition-colors"
-          >
-            <X className="w-5 h-5 text-muted-foreground" />
-          </button>
-        </div>
-        
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100%-65px)]">
-          {messages.length === 0 ? (
-            <div className="text-center text-muted-foreground py-8">
-              No messages yet. Start talking to Kiro!
+    <div className="flex flex-col h-full w-full bg-black/20 backdrop-blur-3xl border-l border-white/10">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-white/10 bg-black/20">
+        <h2 className="text-lg font-semibold tracking-wide text-white/90">Meeting Chat</h2>
+      </div>
+      
+      <div 
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
+      >
+        {messages.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center space-y-3 opacity-50">
+            <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center mb-2">
+              <span className="text-xl">💬</span>
             </div>
-          ) : (
-            messages.map((message, index) => (
+            <p className="text-sm font-medium">No messages yet</p>
+            <p className="text-xs">Start talking to Kiro to see the transcript here.</p>
+          </div>
+        ) : (
+          messages.map((message, index) => (
+            <div
+              key={index}
+              className={cn(
+                "flex flex-col max-w-[85%] animate-in fade-in slide-in-from-bottom-2 duration-300",
+                message.role === "user" ? "ml-auto items-end" : "items-start"
+              )}
+            >
+              <span className="text-[11px] font-medium text-white/40 mb-1 px-1 uppercase tracking-wider">
+                {message.role === "user" ? "You" : "Kiro"}
+              </span>
               <div
-                key={index}
                 className={cn(
-                  "p-3 rounded-xl max-w-[85%]",
+                  "p-4 rounded-2xl shadow-sm text-sm leading-relaxed backdrop-blur-md",
                   message.role === "user"
-                    ? "bg-primary/20 ml-auto text-foreground"
-                    : "bg-secondary text-foreground"
+                    ? "bg-primary/20 text-white border border-primary/30 rounded-tr-sm"
+                    : "bg-white/5 text-white/90 border border-white/10 rounded-tl-sm"
                 )}
               >
-                <p className="text-sm">{message.content}</p>
+                {message.content}
               </div>
-            ))
-          )}
-        </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

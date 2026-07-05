@@ -135,6 +135,14 @@ export const useVoiceAssistant = () => {
   };
 
   const getAIResponse = async (question: string): Promise<string> => {
+    const models = [
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "google/gemma-4-31b-it:free",
+      "qwen/qwen3-coder:free",
+      "meta-llama/llama-3.2-3b-instruct:free",
+      "poolside/laguna-xs-2.1:free"
+    ];
+
     try {
       const systemPrompt = `You are Kiro, an intelligent and friendly AI study assistant. Your role is to help students learn and understand various subjects.
 Guidelines:
@@ -148,28 +156,47 @@ Guidelines:
 - Be conversational and engaging
 - Keep responses under 150 words unless the topic requires more detail`;
 
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "meta-llama/llama-3.3-70b-instruct:free",
-          messages: [
-            { role: "system", content: systemPrompt },
-            ...messages.slice(-10),
-            { role: "user", content: question }
-          ],
-        }),
-      });
+      let lastError = "";
 
-      if (!response.ok) throw new Error('AI gateway error');
-      const data = await response.json();
-      return data.choices[0].message.content;
+      for (const model of models) {
+        try {
+          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: [
+                { role: "system", content: systemPrompt },
+                ...messages.slice(-10),
+                { role: "user", content: question }
+              ],
+            }),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.warn(`Model ${model} failed with status ${response.status}:`, errorText);
+            lastError = `${response.status} ${errorText}`;
+            continue; // Try next model
+          }
+
+          const data = await response.json();
+          if (data.choices && data.choices[0] && data.choices[0].message) {
+            return data.choices[0].message.content;
+          }
+        } catch (err) {
+          console.warn(`Error using model ${model}:`, err);
+          lastError = String(err);
+        }
+      }
+      
+      throw new Error(`All models failed. Last error: ${lastError}`);
     } catch (error) {
       console.error('AI response error:', error);
-      return "I'm having trouble thinking right now. Could you please try again?";
+      return `I'm having trouble thinking right now. Could you please try again? (Error: ${error instanceof Error ? error.message : String(error)})`;
     }
   };
 
