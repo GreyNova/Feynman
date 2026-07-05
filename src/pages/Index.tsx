@@ -1,4 +1,4 @@
-import KiroOrb from "@/components/KiroOrb";
+import FeynmanOrb from "@/components/FeynmanOrb";
 import StatusBadge from "@/components/StatusBadge";
 import MicButton from "@/components/MicButton";
 import ChatHistory from "@/components/ChatHistory";
@@ -24,7 +24,7 @@ const Index = () => {
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-status-connected animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
             <span className="text-xl font-bold tracking-tight text-white/90 flex items-center gap-1">
-              Kiro<span className="text-primary font-medium">AI</span>
+              Feynman<span className="text-primary font-medium">AI</span>
             </span>
           </div>
           
@@ -39,7 +39,7 @@ const Index = () => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] opacity-50 pointer-events-none" />
           
           <div className="mb-12 relative z-10 scale-110">
-            <KiroOrb isListening={isListening} isSpeaking={isSpeaking} />
+            <FeynmanOrb isListening={isListening} isSpeaking={isSpeaking} />
           </div>
 
           <div className="text-center space-y-4 relative z-10 mt-8">
@@ -59,7 +59,7 @@ const Index = () => {
                 ? "Speak clearly, I'm listening to you"
                 : isSpeaking
                 ? "Listen to my response"
-                : "Tap the microphone to start talking with Kiro about your subjects."}
+                : "Tap the microphone to start talking with Feynman about your subjects."}
             </p>
           </div>
         </main>

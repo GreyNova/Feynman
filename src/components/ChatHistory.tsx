@@ -35,7 +35,7 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
               <span className="text-xl">💬</span>
             </div>
             <p className="text-sm font-medium">No messages yet</p>
-            <p className="text-xs">Start talking to Kiro to see the transcript here.</p>
+            <p className="text-xs">Start talking to Feynman to see the transcript here.</p>
           </div>
         ) : (
           messages.map((message, index) => (
@@ -47,7 +47,7 @@ const ChatHistory = ({ messages }: ChatHistoryProps) => {
               )}
             >
               <span className="text-[11px] font-medium text-white/40 mb-1 px-1 uppercase tracking-wider">
-                {message.role === "user" ? "You" : "Kiro"}
+                {message.role === "user" ? "You" : "Feynman"}
               </span>
               <div
                 className={cn(

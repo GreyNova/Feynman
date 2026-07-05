@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 
-interface KiroOrbProps {
+interface FeynmanOrbProps {
   isListening: boolean;
   isSpeaking: boolean;
 }
 
-const KiroOrb = ({ isListening, isSpeaking }: KiroOrbProps) => {
+const FeynmanOrb = ({ isListening, isSpeaking }: FeynmanOrbProps) => {
   return (
     <div className="relative flex items-center justify-center">
       {/* Outer ring */}
@@ -35,7 +35,7 @@ const KiroOrb = ({ isListening, isSpeaking }: KiroOrbProps) => {
       {/* Main orb */}
       <div
         className={cn(
-          "relative w-44 h-44 rounded-full animate-float",
+          "relative w-44 h-44 rounded-full animate-float overflow-hidden",
           "bg-gradient-to-br from-orb-inner via-primary to-orb-outer",
           isListening ? "animate-listening-pulse" : "animate-glow-pulse",
           isSpeaking && "scale-105"
@@ -51,9 +51,26 @@ const KiroOrb = ({ isListening, isSpeaking }: KiroOrbProps) => {
         <div 
           className="absolute top-6 left-8 w-16 h-12 rounded-full bg-white/20 blur-xl"
         />
+
+        {/* Wave Animation when Speaking */}
+        {isSpeaking && (
+          <div className="absolute inset-0 flex items-center justify-center gap-1.5 z-10 backdrop-blur-[2px]">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className="w-1.5 bg-white/90 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                style={{
+                  height: "12px",
+                  animation: `waveform 0.6s ease-in-out infinite alternate`,
+                  animationDelay: `${i * 0.15}s`,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default KiroOrb;
+export default FeynmanOrb;
