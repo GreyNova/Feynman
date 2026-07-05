@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 5%;
+
+    --secondary: 222 47% 12%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 47% 15%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 174 72% 46%;
+    --accent-foreground: 222 47% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 47% 18%;
+    --input: 222 47% 18%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* Kiro-AI Custom Tokens */
+    --orb-glow: 217 91% 60%;
+    --orb-inner: 199 89% 48%;
+    --orb-outer: 217 91% 50%;
+    --status-connected: 142 76% 36%;
+    --status-disconnected: 0 0% 50%;
+
+    /* Gradients */
+    --gradient-orb: radial-gradient(circle at 30% 30%, hsl(199 89% 58%), hsl(217 91% 50%) 50%, hsl(217 91% 35%));
+    --gradient-background: radial-gradient(ellipse at center, hsl(222 47% 10%) 0%, hsl(222 47% 5%) 100%);
+
+    /* Shadows */
+    --shadow-orb: 0 0 60px 20px hsl(217 91% 60% / 0.4);
+    --shadow-orb-ring: 0 0 40px 10px hsl(217 91% 60% / 0.2);
+    --shadow-button: 0 0 30px 5px hsl(174 72% 46% / 0.5);
+  }
+
+  .dark {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+    background: var(--gradient-background);
+    min-height: 100vh;
+  }
+}
+
+/* Animations */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulse-ring-outer {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: var(--shadow-orb);
+  }
+  50% {
+    box-shadow: 0 0 80px 30px hsl(var(--orb-glow) / 0.5);
+  }
+}
+
+@keyframes listening-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 60px 20px hsl(var(--accent) / 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 100px 40px hsl(var(--accent) / 0.6);
+  }
+}
+
+@keyframes button-glow {
+  0%, 100% {
+    box-shadow: var(--shadow-button);
+  }
+  50% {
+    box-shadow: 0 0 40px 10px hsl(174 72% 46% / 0.7);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+.animate-pulse-ring-outer {
+  animation: pulse-ring-outer 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-listening-pulse {
+  animation: listening-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-button-glow {
+  animation: button-glow 2s ease-in-out infinite;
+}
